@@ -1,0 +1,27 @@
+name: Feature request
+description: Propose a scoped SDK improvement
+title: "feat: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      placeholder: Integrators cannot build migrations without reimplementing XDR argument encoding.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      placeholder: Add a buildRequestMigration helper that mirrors the protocol method shape.
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: API design notes
+      description: Share naming, typing, or backwards-compatibility concerns
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

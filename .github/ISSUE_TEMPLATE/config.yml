@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support guide
+    url: https://github.com/vowena/sdk/blob/main/SUPPORT.md
+    about: Start here if you are unsure whether this should be an issue
+  - name: Security policy
+    url: https://github.com/vowena/sdk/security/policy
+    about: Report vulnerabilities privately
+  - name: Documentation
+    url: https://docs.vowena.xyz
+    about: Check the docs before opening an issue

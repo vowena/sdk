@@ -1,0 +1,38 @@
+name: Bug report
+description: Report a reproducible SDK bug
+title: "fix: "
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      placeholder: buildCharge throws when using a custom network passphrase.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include code snippets, config, and the exact method call if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, package version, network, wallet or RPC details
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues first.
+          required: true
+        - label: This is not a security disclosure.
+          required: true
