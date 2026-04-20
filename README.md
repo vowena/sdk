@@ -10,13 +10,13 @@ TypeScript SDK for the Vowena recurring payment protocol on Stellar. Build, simu
 ## Install
 
 ```bash
-npm install vowena
+npm install @vowena/sdk
 ```
 
 ## Quick start
 
 ```typescript
-import { VowenaClient } from "vowena";
+import { VowenaClient } from "@vowena/sdk";
 
 const client = new VowenaClient({
   contractId: "C...",
@@ -80,7 +80,7 @@ These simulate the contract call and return parsed data directly.
 Amounts on the contract use stroops (7 decimal places). Use the included conversion utilities:
 
 ```typescript
-import { toStroops, fromStroops } from "vowena";
+import { toStroops, fromStroops } from "@vowena/sdk";
 
 const amount = toStroops("9.99"); // 99900000n
 const display = fromStroops(99900000n); // "9.99"
@@ -91,7 +91,7 @@ const display = fromStroops(99900000n); // "9.99"
 Poll for contract events using `getEvents` or the `VowenaEventPoller` class:
 
 ```typescript
-import { getEvents, VowenaEventPoller } from "vowena";
+import { getEvents, VowenaEventPoller } from "@vowena/sdk";
 
 // One-shot fetch
 const { events, latestLedger } = await getEvents(rpcUrl, contractId, startLedger);
@@ -113,7 +113,7 @@ await poller.start();
 The SDK exports pre-configured network settings and time constants:
 
 ```typescript
-import { NETWORKS, USDC_DECIMALS, SECONDS_PER_DAY, SECONDS_PER_MONTH, SECONDS_PER_YEAR } from "vowena";
+import { NETWORKS, USDC_DECIMALS, SECONDS_PER_DAY, SECONDS_PER_MONTH, SECONDS_PER_YEAR } from "@vowena/sdk";
 
 console.log(NETWORKS.testnet.rpcUrl); // "https://soroban-testnet.stellar.org"
 ```
