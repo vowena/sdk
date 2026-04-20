@@ -1,6 +1,9 @@
 {
-  "name": "vowena",
+  "name": "@vowena/sdk",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "TypeScript SDK for the Vowena recurring payment protocol on Stellar",
   "license": "Apache-2.0",
   "homepage": "https://docs.vowena.xyz",
