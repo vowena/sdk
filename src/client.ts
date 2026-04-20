@@ -13,7 +13,11 @@ import type {
   SubscriptionStatus,
   TransactionResult,
 } from "./types.js";
-import { buildTransaction, simulateRead, submitTransaction } from "./transaction.js";
+import {
+  buildTransaction,
+  simulateRead,
+  submitTransaction,
+} from "./transaction.js";
 
 /**
  * Client for interacting with the Vowena recurring payment protocol.
@@ -33,9 +37,7 @@ export class VowenaClient {
 
   // ---- Write methods (return assembled XDR for wallet signing) ----
 
-  async buildCreatePlan(
-    params: CreatePlanParams
-  ): Promise<string> {
+  async buildCreatePlan(params: CreatePlanParams): Promise<string> {
     const op = this.contract.call(
       "create_plan",
       new Address(params.merchant).toScVal(),
@@ -45,13 +47,13 @@ export class VowenaClient {
       nativeToScVal(params.trialPeriods ?? 0, { type: "u32" }),
       nativeToScVal(params.maxPeriods ?? 0, { type: "u32" }),
       nativeToScVal(params.gracePeriod ?? 2_592_000, { type: "u64" }),
-      nativeToScVal(params.priceCeiling, { type: "i128" })
+      nativeToScVal(params.priceCeiling, { type: "i128" }),
     );
     return buildTransaction(
       this.server,
       params.merchant,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
@@ -67,7 +69,7 @@ export class VowenaClient {
   async buildSubscribe(
     subscriber: string,
     planId: number,
-    opts: { expirationLedger?: number; allowancePeriods?: number } = {}
+    opts: { expirationLedger?: number; allowancePeriods?: number } = {},
   ): Promise<string> {
     const expirationLedger =
       opts.expirationLedger ?? (await this.defaultExpirationLedger());
@@ -78,13 +80,13 @@ export class VowenaClient {
       new Address(subscriber).toScVal(),
       nativeToScVal(planId, { type: "u64" }),
       nativeToScVal(expirationLedger, { type: "u32" }),
-      nativeToScVal(allowancePeriods, { type: "u32" })
+      nativeToScVal(allowancePeriods, { type: "u32" }),
     );
     return buildTransaction(
       this.server,
       subscriber,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
@@ -95,19 +97,16 @@ export class VowenaClient {
     return latest.sequence + 2_900_000;
   }
 
-  async buildCharge(
-    callerAddress: string,
-    subId: number
-  ): Promise<string> {
+  async buildCharge(callerAddress: string, subId: number): Promise<string> {
     const op = this.contract.call(
       "charge",
-      nativeToScVal(subId, { type: "u64" })
+      nativeToScVal(subId, { type: "u64" }),
     );
     return buildTransaction(
       this.server,
       callerAddress,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
@@ -115,75 +114,65 @@ export class VowenaClient {
     const op = this.contract.call(
       "cancel",
       new Address(caller).toScVal(),
-      nativeToScVal(subId, { type: "u64" })
+      nativeToScVal(subId, { type: "u64" }),
     );
-    return buildTransaction(
-      this.server,
-      caller,
-      this.networkPassphrase,
-      op
-    );
+    return buildTransaction(this.server, caller, this.networkPassphrase, op);
   }
 
   async buildRefund(
     merchantAddress: string,
     subId: number,
-    amount: bigint
+    amount: bigint,
   ): Promise<string> {
     const op = this.contract.call(
       "refund",
       nativeToScVal(subId, { type: "u64" }),
-      nativeToScVal(amount, { type: "i128" })
+      nativeToScVal(amount, { type: "i128" }),
     );
     return buildTransaction(
       this.server,
       merchantAddress,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
   async buildUpdatePlanAmount(
     merchantAddress: string,
     planId: number,
-    newAmount: bigint
+    newAmount: bigint,
   ): Promise<string> {
     const op = this.contract.call(
       "update_plan_amount",
       nativeToScVal(planId, { type: "u64" }),
-      nativeToScVal(newAmount, { type: "i128" })
+      nativeToScVal(newAmount, { type: "i128" }),
     );
     return buildTransaction(
       this.server,
       merchantAddress,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
   async buildRequestMigration(
     merchant: string,
     oldPlanId: number,
-    newPlanId: number
+    newPlanId: number,
   ): Promise<string> {
     const op = this.contract.call(
       "request_migration",
       new Address(merchant).toScVal(),
       nativeToScVal(oldPlanId, { type: "u64" }),
-      nativeToScVal(newPlanId, { type: "u64" })
+      nativeToScVal(newPlanId, { type: "u64" }),
     );
-    return buildTransaction(
-      this.server,
-      merchant,
-      this.networkPassphrase,
-      op
-    );
+    return buildTransaction(this.server, merchant, this.networkPassphrase, op);
   }
 
   async buildAcceptMigration(
     subscriber: string,
     subId: number,
-    opts: { expirationLedger?: number; allowancePeriods?: number } = {}
+    opts: { expirationLedger?: number; allowancePeriods?: number } = {},
   ): Promise<string> {
     const expirationLedger =
       opts.expirationLedger ?? (await this.defaultExpirationLedger());
@@ -194,37 +183,37 @@ export class VowenaClient {
       new Address(subscriber).toScVal(),
       nativeToScVal(subId, { type: "u64" }),
       nativeToScVal(expirationLedger, { type: "u32" }),
-      nativeToScVal(allowancePeriods, { type: "u32" })
+      nativeToScVal(allowancePeriods, { type: "u32" }),
     );
     return buildTransaction(
       this.server,
       subscriber,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
   async buildRejectMigration(
     subscriber: string,
-    subId: number
+    subId: number,
   ): Promise<string> {
     const op = this.contract.call(
       "reject_migration",
       new Address(subscriber).toScVal(),
-      nativeToScVal(subId, { type: "u64" })
+      nativeToScVal(subId, { type: "u64" }),
     );
     return buildTransaction(
       this.server,
       subscriber,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
   async buildReactivate(
     subscriber: string,
     subId: number,
-    opts: { expirationLedger?: number; allowancePeriods?: number } = {}
+    opts: { expirationLedger?: number; allowancePeriods?: number } = {},
   ): Promise<string> {
     const expirationLedger =
       opts.expirationLedger ?? (await this.defaultExpirationLedger());
@@ -235,13 +224,13 @@ export class VowenaClient {
       new Address(subscriber).toScVal(),
       nativeToScVal(subId, { type: "u64" }),
       nativeToScVal(expirationLedger, { type: "u32" }),
-      nativeToScVal(allowancePeriods, { type: "u32" })
+      nativeToScVal(allowancePeriods, { type: "u32" }),
     );
     return buildTransaction(
       this.server,
       subscriber,
       this.networkPassphrase,
-      op
+      op,
     );
   }
 
@@ -250,14 +239,16 @@ export class VowenaClient {
   private async readContract(
     callerAddress: string,
     method: string,
-    ...args: Parameters<Contract["call"]> extends [string, ...infer R] ? R : never
+    ...args: Parameters<Contract["call"]> extends [string, ...infer R]
+      ? R
+      : never
   ): Promise<unknown> {
     const op = this.contract.call(method, ...args);
     const result = await simulateRead(
       this.server,
       callerAddress,
       this.networkPassphrase,
-      op
+      op,
     );
     return result ? scValToNative(result) : null;
   }
@@ -266,55 +257,55 @@ export class VowenaClient {
     const raw = (await this.readContract(
       callerAddress,
       "get_plan",
-      nativeToScVal(planId, { type: "u64" })
+      nativeToScVal(planId, { type: "u64" }),
     )) as Record<string, unknown>;
     return parsePlan(raw);
   }
 
   async getSubscription(
     subId: number,
-    callerAddress: string
+    callerAddress: string,
   ): Promise<Subscription> {
     const raw = (await this.readContract(
       callerAddress,
       "get_subscription",
-      nativeToScVal(subId, { type: "u64" })
+      nativeToScVal(subId, { type: "u64" }),
     )) as Record<string, unknown>;
     return parseSubscription(raw);
   }
 
   async getMerchantPlans(
     merchant: string,
-    callerAddress: string
+    callerAddress: string,
   ): Promise<number[]> {
     const raw = await this.readContract(
       callerAddress,
       "get_merchant_plans",
-      new Address(merchant).toScVal()
+      new Address(merchant).toScVal(),
     );
     return (raw as number[]) ?? [];
   }
 
   async getSubscriberSubscriptions(
     subscriber: string,
-    callerAddress: string
+    callerAddress: string,
   ): Promise<number[]> {
     const raw = await this.readContract(
       callerAddress,
       "get_subscriber_subscriptions",
-      new Address(subscriber).toScVal()
+      new Address(subscriber).toScVal(),
     );
     return (raw as number[]) ?? [];
   }
 
   async getPlanSubscribers(
     planId: number,
-    callerAddress: string
+    callerAddress: string,
   ): Promise<number[]> {
     const raw = await this.readContract(
       callerAddress,
       "get_plan_subscribers",
-      nativeToScVal(planId, { type: "u64" })
+      nativeToScVal(planId, { type: "u64" }),
     );
     return (raw as number[]) ?? [];
   }

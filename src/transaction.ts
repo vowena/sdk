@@ -14,7 +14,7 @@ export async function buildTransaction(
   server: SorobanRpc.Server,
   sourceAddress: string,
   networkPassphrase: string,
-  operation: xdr.Operation
+  operation: xdr.Operation,
 ): Promise<string> {
   const account = await server.getAccount(sourceAddress);
   const tx = new TransactionBuilder(account, {
@@ -28,13 +28,13 @@ export async function buildTransaction(
   const simulated = await server.simulateTransaction(tx);
   if (SorobanRpc.Api.isSimulationError(simulated)) {
     throw new Error(
-      `Simulation failed: ${(simulated as SorobanRpc.Api.SimulateTransactionErrorResponse).error}`
+      `Simulation failed: ${(simulated as SorobanRpc.Api.SimulateTransactionErrorResponse).error}`,
     );
   }
 
   const assembled = SorobanRpc.assembleTransaction(
     tx,
-    simulated as SorobanRpc.Api.SimulateTransactionSuccessResponse
+    simulated as SorobanRpc.Api.SimulateTransactionSuccessResponse,
   );
   return assembled.build().toXDR();
 }
@@ -46,7 +46,7 @@ export async function simulateRead(
   server: SorobanRpc.Server,
   sourceAddress: string,
   networkPassphrase: string,
-  operation: xdr.Operation
+  operation: xdr.Operation,
 ): Promise<xdr.ScVal | null> {
   const account = await server.getAccount(sourceAddress);
   const tx = new TransactionBuilder(account, {
@@ -60,11 +60,12 @@ export async function simulateRead(
   const simulated = await server.simulateTransaction(tx);
   if (SorobanRpc.Api.isSimulationError(simulated)) {
     throw new Error(
-      `Simulation failed: ${(simulated as SorobanRpc.Api.SimulateTransactionErrorResponse).error}`
+      `Simulation failed: ${(simulated as SorobanRpc.Api.SimulateTransactionErrorResponse).error}`,
     );
   }
 
-  const success = simulated as SorobanRpc.Api.SimulateTransactionSuccessResponse;
+  const success =
+    simulated as SorobanRpc.Api.SimulateTransactionSuccessResponse;
   return success.result?.retval ?? null;
 }
 
@@ -74,11 +75,11 @@ export async function simulateRead(
 export async function submitTransaction(
   server: SorobanRpc.Server,
   signedXdr: string,
-  networkPassphrase: string
+  networkPassphrase: string,
 ): Promise<TransactionResult> {
   const tx = TransactionBuilder.fromXDR(
     signedXdr,
-    networkPassphrase
+    networkPassphrase,
   ) as Transaction;
 
   const response = await server.sendTransaction(tx);

@@ -50,7 +50,9 @@ function accountIdFromEntry(entry) {
   const cred = entry.credentials();
   if (cred.switch().name !== "sorobanCredentialsAddress") return null;
   const sc = cred.address().address();
-  return xdr.PublicKey.publicKeyTypeEd25519(sc.accountId().ed25519()).toXDR("base64");
+  return xdr.PublicKey.publicKeyTypeEd25519(sc.accountId().ed25519()).toXDR(
+    "base64",
+  );
 }
 
 function keyToAccountIdXdr(kp) {

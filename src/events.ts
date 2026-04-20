@@ -1,9 +1,7 @@
 import { rpc as SorobanRpc, scValToNative, xdr } from "@stellar/stellar-sdk";
 import type { VowenaEvent, EventPollerOptions } from "./types.js";
 
-function parseEvent(
-  raw: SorobanRpc.Api.EventResponse
-): VowenaEvent {
+function parseEvent(raw: SorobanRpc.Api.EventResponse): VowenaEvent {
   const topics = raw.topic.map((t) => {
     try {
       if (typeof t === "string") {
@@ -43,7 +41,7 @@ export async function getEvents(
   rpcUrl: string,
   contractId: string,
   startLedger: number,
-  limit = 100
+  limit = 100,
 ): Promise<{ events: VowenaEvent[]; latestLedger: number }> {
   const server = new SorobanRpc.Server(rpcUrl);
   const response = await server.getEvents({
@@ -86,7 +84,7 @@ export class VowenaEventPoller {
         const { events, latestLedger } = await getEvents(
           this.options.rpcUrl,
           this.options.contractId,
-          this.lastLedger
+          this.lastLedger,
         );
 
         for (const event of events) {

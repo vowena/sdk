@@ -28,7 +28,10 @@ export function fromStroops(stroops: bigint): string {
   const whole = abs / STROOP_FACTOR;
   const frac = abs % STROOP_FACTOR;
 
-  const fracStr = frac.toString().padStart(USDC_DECIMALS, "0").replace(/0+$/, "");
+  const fracStr = frac
+    .toString()
+    .padStart(USDC_DECIMALS, "0")
+    .replace(/0+$/, "");
   const sign = negative ? "-" : "";
 
   return fracStr ? `${sign}${whole}.${fracStr}` : `${sign}${whole}`;

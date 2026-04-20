@@ -44,35 +44,35 @@ console.log(result.hash, result.success);
 
 These return assembled transaction XDR (base64 string) ready for wallet signing.
 
-| Method | Description |
-|---|---|
-| `buildCreatePlan(params)` | Create a new subscription plan |
-| `buildSubscribe(subscriber, planId)` | Subscribe to a plan |
-| `buildCharge(caller, subId)` | Charge a subscription for the current period |
-| `buildCancel(caller, subId)` | Cancel a subscription |
-| `buildRefund(merchant, subId, amount)` | Refund a subscriber |
-| `buildUpdatePlanAmount(merchant, planId, newAmount)` | Update a plan's recurring amount |
+| Method                                                  | Description                                    |
+| ------------------------------------------------------- | ---------------------------------------------- |
+| `buildCreatePlan(params)`                               | Create a new subscription plan                 |
+| `buildSubscribe(subscriber, planId)`                    | Subscribe to a plan                            |
+| `buildCharge(caller, subId)`                            | Charge a subscription for the current period   |
+| `buildCancel(caller, subId)`                            | Cancel a subscription                          |
+| `buildRefund(merchant, subId, amount)`                  | Refund a subscriber                            |
+| `buildUpdatePlanAmount(merchant, planId, newAmount)`    | Update a plan's recurring amount               |
 | `buildRequestMigration(merchant, oldPlanId, newPlanId)` | Request migration of subscribers to a new plan |
-| `buildAcceptMigration(subscriber, subId)` | Accept a pending migration |
-| `buildRejectMigration(subscriber, subId)` | Reject a pending migration |
-| `buildReactivate(subscriber, subId)` | Reactivate a cancelled subscription |
+| `buildAcceptMigration(subscriber, subId)`               | Accept a pending migration                     |
+| `buildRejectMigration(subscriber, subId)`               | Reject a pending migration                     |
+| `buildReactivate(subscriber, subId)`                    | Reactivate a cancelled subscription            |
 
 ### Read methods
 
 These simulate the contract call and return parsed data directly.
 
-| Method | Description |
-|---|---|
-| `getPlan(planId, caller)` | Fetch a plan by ID |
-| `getSubscription(subId, caller)` | Fetch a subscription by ID |
-| `getMerchantPlans(merchant, caller)` | List plan IDs for a merchant |
+| Method                                           | Description                            |
+| ------------------------------------------------ | -------------------------------------- |
+| `getPlan(planId, caller)`                        | Fetch a plan by ID                     |
+| `getSubscription(subId, caller)`                 | Fetch a subscription by ID             |
+| `getMerchantPlans(merchant, caller)`             | List plan IDs for a merchant           |
 | `getSubscriberSubscriptions(subscriber, caller)` | List subscription IDs for a subscriber |
-| `getPlanSubscribers(planId, caller)` | List subscription IDs for a plan |
+| `getPlanSubscribers(planId, caller)`             | List subscription IDs for a plan       |
 
 ### Submit
 
-| Method | Description |
-|---|---|
+| Method                         | Description                                           |
+| ------------------------------ | ----------------------------------------------------- |
 | `submitTransaction(signedXdr)` | Submit a signed transaction and wait for confirmation |
 
 ## Amount conversion
@@ -94,7 +94,11 @@ Poll for contract events using `getEvents` or the `VowenaEventPoller` class:
 import { getEvents, VowenaEventPoller } from "@vowena/sdk";
 
 // One-shot fetch
-const { events, latestLedger } = await getEvents(rpcUrl, contractId, startLedger);
+const { events, latestLedger } = await getEvents(
+  rpcUrl,
+  contractId,
+  startLedger,
+);
 
 // Continuous polling
 const poller = new VowenaEventPoller({
@@ -113,7 +117,13 @@ await poller.start();
 The SDK exports pre-configured network settings and time constants:
 
 ```typescript
-import { NETWORKS, USDC_DECIMALS, SECONDS_PER_DAY, SECONDS_PER_MONTH, SECONDS_PER_YEAR } from "@vowena/sdk";
+import {
+  NETWORKS,
+  USDC_DECIMALS,
+  SECONDS_PER_DAY,
+  SECONDS_PER_MONTH,
+  SECONDS_PER_YEAR,
+} from "@vowena/sdk";
 
 console.log(NETWORKS.testnet.rpcUrl); // "https://soroban-testnet.stellar.org"
 ```

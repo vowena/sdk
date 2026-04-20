@@ -24,8 +24,7 @@ async function main() {
   const config: KeeperConfig = {
     contractId: process.env.CONTRACT_ID ?? "",
     rpcUrl: process.env.RPC_URL ?? "https://soroban-testnet.stellar.org",
-    networkPassphrase:
-      process.env.NETWORK_PASSPHRASE ?? Networks.TESTNET,
+    networkPassphrase: process.env.NETWORK_PASSPHRASE ?? Networks.TESTNET,
     keeperSecretKey: process.env.KEEPER_SECRET ?? "",
     intervalMs: Number(process.env.INTERVAL_MS ?? 60_000),
   };
@@ -63,7 +62,7 @@ async function main() {
           // Sign the transaction
           const tx = TransactionBuilder.fromXDR(
             xdrStr,
-            config.networkPassphrase
+            config.networkPassphrase,
           );
           tx.sign(keypair);
           const signedXdr = tx.toXDR();
