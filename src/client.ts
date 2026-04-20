@@ -55,14 +55,30 @@ export class VowenaClient {
     );
   }
 
+  /**
+   * Build a subscribe tx. The contract sets a SAC allowance on behalf of the
+   * subscriber during this call; those values must be locked in at build time
+   * (not computed inside the contract) so Soroban's auth tree matches between
+   * transaction simulation and submission.
+   *
+   * If you omit `expirationLedger` or `allowancePeriods`, the SDK picks safe
+   * defaults: current RPC ledger + MAX_APPROVAL_LEDGERS, and 120 periods.
+   */
   async buildSubscribe(
     subscriber: string,
-    planId: number
+    planId: number,
+    opts: { expirationLedger?: number; allowancePeriods?: number } = {}
   ): Promise<string> {
+    const expirationLedger =
+      opts.expirationLedger ?? (await this.defaultExpirationLedger());
+    const allowancePeriods = opts.allowancePeriods ?? 120;
+
     const op = this.contract.call(
       "subscribe",
       new Address(subscriber).toScVal(),
-      nativeToScVal(planId, { type: "u64" })
+      nativeToScVal(planId, { type: "u64" }),
+      nativeToScVal(expirationLedger, { type: "u32" }),
+      nativeToScVal(allowancePeriods, { type: "u32" })
     );
     return buildTransaction(
       this.server,
@@ -70,6 +86,13 @@ export class VowenaClient {
       this.networkPassphrase,
       op
     );
+  }
+
+  private async defaultExpirationLedger(): Promise<number> {
+    const latest = await this.server.getLatestLedger();
+    // Cap below the SAC's live_until max (3,110,400). 2,900,000 is a safe
+    // ~168-day buffer that avoids edge-case rejections.
+    return latest.sequence + 2_900_000;
   }
 
   async buildCharge(
@@ -159,12 +182,19 @@ export class VowenaClient {
 
   async buildAcceptMigration(
     subscriber: string,
-    subId: number
+    subId: number,
+    opts: { expirationLedger?: number; allowancePeriods?: number } = {}
   ): Promise<string> {
+    const expirationLedger =
+      opts.expirationLedger ?? (await this.defaultExpirationLedger());
+    const allowancePeriods = opts.allowancePeriods ?? 120;
+
     const op = this.contract.call(
       "accept_migration",
       new Address(subscriber).toScVal(),
-      nativeToScVal(subId, { type: "u64" })
+      nativeToScVal(subId, { type: "u64" }),
+      nativeToScVal(expirationLedger, { type: "u32" }),
+      nativeToScVal(allowancePeriods, { type: "u32" })
     );
     return buildTransaction(
       this.server,
@@ -193,12 +223,19 @@ export class VowenaClient {
 
   async buildReactivate(
     subscriber: string,
-    subId: number
+    subId: number,
+    opts: { expirationLedger?: number; allowancePeriods?: number } = {}
   ): Promise<string> {
+    const expirationLedger =
+      opts.expirationLedger ?? (await this.defaultExpirationLedger());
+    const allowancePeriods = opts.allowancePeriods ?? 120;
+
     const op = this.contract.call(
       "reactivate",
       new Address(subscriber).toScVal(),
-      nativeToScVal(subId, { type: "u64" })
+      nativeToScVal(subId, { type: "u64" }),
+      nativeToScVal(expirationLedger, { type: "u32" }),
+      nativeToScVal(allowancePeriods, { type: "u32" })
     );
     return buildTransaction(
       this.server,
