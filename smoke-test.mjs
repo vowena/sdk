@@ -29,7 +29,7 @@ import {
 } from "@stellar/stellar-sdk";
 import { VowenaClient, fromStroops, SECONDS_PER_DAY } from "./dist/index.js";
 
-const CONTRACT_ID = "CDVNTA6K6YX6YWD7LAFGIVDXVIDGUB3P7EQ3EU6V3XLMQEZ5SAIGH66Z";
+const CONTRACT_ID = "CCNDNEGYFYKTVBM7T2BEF5YVSKKICE44JOVHT7SAN5YTKHHBFIIEL72T";
 const TUSDC_SAC = "CARX6UEO5WL2IMHPCFURHXNRQJQ4NHSMN26SK6FNE7FN27LISLZDINFA";
 const RPC_URL = "https://soroban-testnet.stellar.org";
 const PASSPHRASE = "Test SDF Network ; September 2015";

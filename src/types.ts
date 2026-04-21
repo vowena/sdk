@@ -19,8 +19,27 @@ export interface Plan {
   active: boolean;
   /** Display name set by the merchant when the plan was created */
   name: string;
-  /** Which project slot (0-based) this plan belongs to */
-  projectSlot: number;
+  /** Chain-assigned ID of the parent project this plan belongs to */
+  projectId: number;
+}
+
+/**
+ * A Project on chain. Groups one merchant's plans under a named bucket.
+ * The id is assigned by the contract (NextProjectId), so it's globally
+ * unique across the protocol — no client-side ID generation anywhere.
+ */
+export interface Project {
+  id: number;
+  merchant: string;
+  name: string;
+  description: string;
+  createdAt: number;
+}
+
+export interface CreateProjectParams {
+  merchant: string;
+  name: string;
+  description?: string;
 }
 
 export interface Subscription {
@@ -47,8 +66,8 @@ export interface CreatePlanParams {
   priceCeiling: bigint;
   /** Human-readable plan name shown to merchants and subscribers */
   name: string;
-  /** Project slot this plan belongs to (0 if you only have one project) */
-  projectSlot: number;
+  /** Chain-assigned project ID this plan belongs to */
+  projectId: number;
 }
 
 export interface VowenaClientOptions {

@@ -8,7 +8,9 @@ import {
 import type {
   VowenaClientOptions,
   CreatePlanParams,
+  CreateProjectParams,
   Plan,
+  Project,
   Subscription,
   SubscriptionStatus,
   TransactionResult,
@@ -37,6 +39,27 @@ export class VowenaClient {
 
   // ---- Write methods (return assembled XDR for wallet signing) ----
 
+  /**
+   * Build a tx that creates a Project on chain. Returns the assembled XDR
+   * for the merchant's wallet to sign. The contract assigns the project_id
+   * (a globally unique u64) on submit; read it via getMerchantProjects()
+   * after the tx confirms.
+   */
+  async buildCreateProject(params: CreateProjectParams): Promise<string> {
+    const op = this.contract.call(
+      "create_project",
+      new Address(params.merchant).toScVal(),
+      nativeToScVal(params.name, { type: "string" }),
+      nativeToScVal(params.description ?? "", { type: "string" }),
+    );
+    return buildTransaction(
+      this.server,
+      params.merchant,
+      this.networkPassphrase,
+      op,
+    );
+  }
+
   async buildCreatePlan(params: CreatePlanParams): Promise<string> {
     const op = this.contract.call(
       "create_plan",
@@ -49,7 +72,7 @@ export class VowenaClient {
       nativeToScVal(params.gracePeriod ?? 2_592_000, { type: "u64" }),
       nativeToScVal(params.priceCeiling, { type: "i128" }),
       nativeToScVal(params.name, { type: "string" }),
-      nativeToScVal(params.projectSlot ?? 0, { type: "u32" }),
+      nativeToScVal(params.projectId, { type: "u64" }),
     );
     return buildTransaction(
       this.server,
@@ -288,6 +311,27 @@ export class VowenaClient {
     return (raw as number[]) ?? [];
   }
 
+  async getProject(projectId: number, callerAddress: string): Promise<Project> {
+    const raw = (await this.readContract(
+      callerAddress,
+      "get_project",
+      nativeToScVal(projectId, { type: "u64" }),
+    )) as Record<string, unknown>;
+    return parseProject(raw);
+  }
+
+  async getMerchantProjects(
+    merchant: string,
+    callerAddress: string,
+  ): Promise<number[]> {
+    const raw = await this.readContract(
+      callerAddress,
+      "get_merchant_projects",
+      new Address(merchant).toScVal(),
+    );
+    return (raw as number[]) ?? [];
+  }
+
   async getSubscriberSubscriptions(
     subscriber: string,
     callerAddress: string,
@@ -335,7 +379,17 @@ function parsePlan(raw: Record<string, unknown>): Plan {
     createdAt: Number(raw.created_at),
     active: Boolean(raw.active),
     name: raw.name != null ? String(raw.name) : "",
-    projectSlot: Number(raw.project_slot ?? 0),
+    projectId: Number(raw.project_id ?? 0),
+  };
+}
+
+function parseProject(raw: Record<string, unknown>): Project {
+  return {
+    id: Number(raw.id),
+    merchant: String(raw.merchant),
+    name: raw.name != null ? String(raw.name) : "",
+    description: raw.description != null ? String(raw.description) : "",
+    createdAt: Number(raw.created_at),
   };
 }
 

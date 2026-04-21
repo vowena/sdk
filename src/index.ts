@@ -10,9 +10,11 @@ export {
 } from "./constants.js";
 export type {
   Plan,
+  Project,
   Subscription,
   SubscriptionStatus,
   CreatePlanParams,
+  CreateProjectParams,
   VowenaClientOptions,
   TransactionResult,
   VowenaEvent,
