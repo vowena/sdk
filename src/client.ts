@@ -48,6 +48,7 @@ export class VowenaClient {
       nativeToScVal(params.maxPeriods ?? 0, { type: "u32" }),
       nativeToScVal(params.gracePeriod ?? 2_592_000, { type: "u64" }),
       nativeToScVal(params.priceCeiling, { type: "i128" }),
+      nativeToScVal(params.name, { type: "string" }),
     );
     return buildTransaction(
       this.server,
@@ -332,6 +333,7 @@ function parsePlan(raw: Record<string, unknown>): Plan {
     priceCeiling: BigInt(raw.price_ceiling as string | number),
     createdAt: Number(raw.created_at),
     active: Boolean(raw.active),
+    name: raw.name != null ? String(raw.name) : "",
   };
 }
 

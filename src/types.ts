@@ -17,6 +17,8 @@ export interface Plan {
   priceCeiling: bigint;
   createdAt: number;
   active: boolean;
+  /** Display name set by the merchant when the plan was created */
+  name: string;
 }
 
 export interface Subscription {
@@ -41,6 +43,8 @@ export interface CreatePlanParams {
   maxPeriods?: number;
   gracePeriod?: number;
   priceCeiling: bigint;
+  /** Human-readable plan name shown to merchants and subscribers */
+  name: string;
 }
 
 export interface VowenaClientOptions {
