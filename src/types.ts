@@ -19,6 +19,8 @@ export interface Plan {
   active: boolean;
   /** Display name set by the merchant when the plan was created */
   name: string;
+  /** Which project slot (0-based) this plan belongs to */
+  projectSlot: number;
 }
 
 export interface Subscription {
@@ -45,6 +47,8 @@ export interface CreatePlanParams {
   priceCeiling: bigint;
   /** Human-readable plan name shown to merchants and subscribers */
   name: string;
+  /** Project slot this plan belongs to (0 if you only have one project) */
+  projectSlot: number;
 }
 
 export interface VowenaClientOptions {

@@ -2,7 +2,7 @@ export const NETWORKS = {
   testnet: {
     rpcUrl: "https://soroban-testnet.stellar.org",
     networkPassphrase: "Test SDF Network ; September 2015",
-    contractId: "CDBR7AP5PPIIBUW5NUQ4PTZ2SY35ATNIGBLXT6CJYPILIPPZ5YN5KBSR",
+    contractId: "CDVNTA6K6YX6YWD7LAFGIVDXVIDGUB3P7EQ3EU6V3XLMQEZ5SAIGH66Z",
     usdcAddress: "CARX6UEO5WL2IMHPCFURHXNRQJQ4NHSMN26SK6FNE7FN27LISLZDINFA", // TUSDC test token
   },
   mainnet: {
