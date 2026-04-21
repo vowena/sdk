@@ -259,6 +259,29 @@ export class VowenaClient {
     );
   }
 
+  /**
+   * Bump the TTL of a plan + subscription entry. Permissionless: anyone can
+   * call. Useful for keepers that want to keep long-lived state alive
+   * alongside their charge() calls.
+   */
+  async buildExtendTtl(
+    callerAddress: string,
+    planId: number,
+    subId: number,
+  ): Promise<string> {
+    const op = this.contract.call(
+      "extend_ttl",
+      nativeToScVal(planId, { type: "u64" }),
+      nativeToScVal(subId, { type: "u64" }),
+    );
+    return buildTransaction(
+      this.server,
+      callerAddress,
+      this.networkPassphrase,
+      op,
+    );
+  }
+
   // ---- Read methods ----
 
   private async readContract(
