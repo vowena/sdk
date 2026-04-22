@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="Vowena SDK">
+  <title>Vowena SDK</title>
+  <desc>The official TypeScript SDK for the Vowena recurring payment protocol on Stellar.</desc>
+
+  <defs>
+    <!-- Background gradient: deep violet, reads on both GitHub themes -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F0F16"/>
+      <stop offset="55%" stop-color="#160F3A"/>
+      <stop offset="100%" stop-color="#1A0F52"/>
+    </linearGradient>
+
+    <!-- Soft violet glow behind the loop symbol -->
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#6B4EFF" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#6B4EFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#6B4EFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- 24px dot grid -->
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#FFFFFF" fill-opacity="0.045"/>
+    </pattern>
+
+    <!-- Vignette to push corners back -->
+    <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="65%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+
+    <!-- Right-side fade mask so the code panel breathes off the edge -->
+    <linearGradient id="panelFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/>
+      <stop offset="80%" stop-color="#FFFFFF" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+    </linearGradient>
+    <mask id="panelMask">
+      <rect x="760" y="40" width="520" height="240" fill="url(#panelFade)"/>
+    </mask>
+
+    <!-- Subtle elevated panel surface -->
+    <linearGradient id="panelSurface" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1530" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#0F0B22" stop-opacity="0.92"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base layers -->
+  <rect width="1280" height="320" fill="url(#bg)"/>
+  <rect width="1280" height="320" fill="url(#dots)"/>
+  <rect width="1280" height="320" fill="url(#vignette)"/>
+
+  <!-- Hairlines (top + bottom) for protocol-grade feel -->
+  <line x1="0" y1="0.5" x2="1280" y2="0.5" stroke="#FFFFFF" stroke-opacity="0.06"/>
+  <line x1="0" y1="319.5" x2="1280" y2="319.5" stroke="#FFFFFF" stroke-opacity="0.06"/>
+
+  <!-- Soft accent glow behind the symbol -->
+  <circle cx="170" cy="160" r="180" fill="url(#glow)"/>
+
+  <!-- Logo: flowing loop, scaled to 160px from the 80-unit canonical viewBox -->
+  <g transform="translate(90 80) scale(2)">
+    <path d="M44 18C44 18 28 22 24 40C20 58 36 62 36 62" stroke="#6B4EFF" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M36 62C36 62 52 58 56 40C60 22 44 18 44 18" stroke="#6B4EFF" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.4"/>
+    <circle cx="40" cy="40" r="3" fill="#6B4EFF"/>
+  </g>
+
+  <!-- Wordmark + meta -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'DM Sans', sans-serif">
+    <!-- SDK eyebrow label -->
+    <text x="288" y="138"
+          font-size="11"
+          font-weight="600"
+          fill="#B5A8FF"
+          letter-spacing="2"
+          text-rendering="geometricPrecision">SDK</text>
+
+    <!-- vowena wordmark -->
+    <text x="286" y="200"
+          font-size="84"
+          font-weight="600"
+          fill="#F4F4F5"
+          letter-spacing="-2.5"
+          text-rendering="geometricPrecision">vowena</text>
+
+    <!-- Tagline -->
+    <text x="289" y="238"
+          font-size="17"
+          font-weight="400"
+          fill="#B0ADBF"
+          letter-spacing="-0.2"
+          text-rendering="geometricPrecision">The typed TypeScript client for recurring USDC payments on Stellar.</text>
+
+    <!-- Footer meta row: monospace, far-left -->
+    <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Space Mono', monospace"
+       font-size="11"
+       fill="#807C90"
+       letter-spacing="0.6">
+      <text x="288" y="272">TYPESCRIPT  ·  SOROBAN  ·  APACHE 2.0</text>
+    </g>
+  </g>
+
+  <!-- Right-side decoration: a typed code snippet panel -->
+  <g mask="url(#panelMask)">
+    <!-- Elevated panel -->
+    <rect x="788" y="62" width="448" height="196" rx="14"
+          fill="url(#panelSurface)"
+          stroke="#23223A" stroke-width="1"/>
+
+    <!-- Window chrome dots -->
+    <g transform="translate(806 82)">
+      <circle cx="0" cy="0" r="4.5" fill="#FF4D6A" fill-opacity="0.85"/>
+      <circle cx="16" cy="0" r="4.5" fill="#FFBD2E" fill-opacity="0.85"/>
+      <circle cx="32" cy="0" r="4.5" fill="#00DC82" fill-opacity="0.85"/>
+    </g>
+
+    <!-- Filename tag in the chrome -->
+    <g transform="translate(866 78)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11">
+      <text fill="#807C90" letter-spacing="0.2">subscribe.ts</text>
+    </g>
+
+    <!-- Hairline below chrome -->
+    <line x1="788" y1="100" x2="1236" y2="100" stroke="#23223A" stroke-width="1"/>
+
+    <!-- Code content. Real characters for tactile feel, brand syntax colors. -->
+    <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
+       font-size="12.5"
+       text-rendering="geometricPrecision">
+
+      <!-- Gutter -->
+      <g fill="#3A3650" text-anchor="end" font-size="11">
+        <text x="822" y="128">1</text>
+        <text x="822" y="148">2</text>
+        <text x="822" y="168">3</text>
+        <text x="822" y="188">4</text>
+        <text x="822" y="208">5</text>
+        <text x="822" y="228">6</text>
+      </g>
+
+      <!-- Line 1: import { VowenaClient } from "@vowena/sdk"; -->
+      <g transform="translate(840 128)">
+        <text x="0" y="0" fill="#B5A8FF">import</text>
+        <text x="50" y="0" fill="#807C90"> { </text>
+        <text x="68" y="0" fill="#F4F4F5">VowenaClient</text>
+        <text x="158" y="0" fill="#807C90"> } </text>
+        <text x="178" y="0" fill="#B5A8FF">from</text>
+        <text x="212" y="0" fill="#34EDAA">"@vowena/sdk"</text>
+        <text x="307" y="0" fill="#807C90">;</text>
+      </g>
+
+      <!-- Line 2: blank -->
+
+      <!-- Line 3: const client = new VowenaClient(NETWORKS.testnet); -->
+      <g transform="translate(840 168)">
+        <text x="0" y="0" fill="#B5A8FF">const</text>
+        <text x="40" y="0" fill="#F4F4F5"> client </text>
+        <text x="92" y="0" fill="#807C90">=</text>
+        <text x="103" y="0" fill="#B5A8FF"> new</text>
+        <text x="135" y="0" fill="#9B85FF"> VowenaClient</text>
+        <text x="225" y="0" fill="#807C90">(</text>
+        <text x="232" y="0" fill="#6B9FFF">NETWORKS</text>
+        <text x="295" y="0" fill="#F4F4F5">.testnet</text>
+        <text x="349" y="0" fill="#807C90">);</text>
+      </g>
+
+      <!-- Line 4: const xdr = await client.buildSubscribe(user, planId); -->
+      <g transform="translate(840 188)">
+        <text x="0" y="0" fill="#B5A8FF">const</text>
+        <text x="40" y="0" fill="#F4F4F5"> xdr </text>
+        <text x="74" y="0" fill="#807C90">= </text>
+        <text x="88" y="0" fill="#B5A8FF">await</text>
+        <text x="128" y="0" fill="#F4F4F5"> client</text>
+        <text x="170" y="0" fill="#807C90">.</text>
+        <text x="174" y="0" fill="#6B9FFF">buildSubscribe</text>
+        <text x="278" y="0" fill="#807C90">(user, planId);</text>
+      </g>
+
+      <!-- Line 5: const { hash } = await client.submitTransaction(signed); -->
+      <g transform="translate(840 208)">
+        <text x="0" y="0" fill="#B5A8FF">const</text>
+        <text x="40" y="0" fill="#F4F4F5"> { hash } </text>
+        <text x="106" y="0" fill="#807C90">= </text>
+        <text x="120" y="0" fill="#B5A8FF">await</text>
+        <text x="160" y="0" fill="#F4F4F5"> client</text>
+        <text x="202" y="0" fill="#807C90">.</text>
+        <text x="206" y="0" fill="#6B9FFF">submitTransaction</text>
+        <text x="333" y="0" fill="#807C90">(...);</text>
+      </g>
+
+      <!-- Line 6: comment -->
+      <g transform="translate(840 228)">
+        <text x="0" y="0" fill="#807C90" font-style="italic">// 0xa3f8...e91 confirmed in 6s</text>
+      </g>
+    </g>
+
+    <!-- Bottom status strip inside panel -->
+    <line x1="788" y1="240" x2="1236" y2="240" stroke="#23223A" stroke-width="1"/>
+    <g transform="translate(806 254)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" letter-spacing="0.4">
+      <circle cx="0" cy="-3" r="3" fill="#00DC82"/>
+      <text x="10" y="0" fill="#807C90">strict mode</text>
+      <text x="86" y="0" fill="#3A3650">·</text>
+      <text x="98" y="0" fill="#807C90">tree-shakeable</text>
+      <text x="186" y="0" fill="#3A3650">·</text>
+      <text x="198" y="0" fill="#807C90">esm + cjs</text>
+    </g>
+  </g>
+</svg>
